@@ -45,6 +45,7 @@
   copy:
     src: interfaces.j2
     dest: /etc/network/interfaces
+    backup: yes
     owner: root
     group: root
     mode: 0644
@@ -55,6 +56,7 @@
   assemble:
     src: /etc/network/interfaces.d
     dest: /etc/network/interfaces
+    backup: yes
     owner: root
     group: root
     mode: 0644
