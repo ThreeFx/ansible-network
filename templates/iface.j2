@@ -1,0 +1,17 @@
+# Managed by ansible (role: network), do not edit!
+
+allow-hotplug {{ item.key }}
+iface {{ item.key }} inet static
+    address   {{ item.value.ip | ipaddr('address') }}
+    network   {{ item.value.ip | ipaddr('network') }}
+    netmask   {{ item.value.ip | ipaddr('netmask') }}
+    broadcast {{ item.value.ip | ipaddr('broadcast') }}
+    gateway: {{ item.value.gateway }}
+{% if 'dns' in item.value e%}
+    dns-nameservers {{ item.value.dns | join(' ') }}
+{% endif %}
+
+{% if 'ip6' in item.value %}
+iface {{ item.key }} inet6 static
+    address {{ item.value.ip6 }}
+{% endif %}
