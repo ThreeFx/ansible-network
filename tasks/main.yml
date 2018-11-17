@@ -4,7 +4,7 @@
   file:
     path: /etc/network/interfaces.d
     state: directory
-  when: "'network' in hostvars[inventory_hostname]"
+  when: network is defined
 
 - name: Install required software
   become: True
@@ -15,7 +15,7 @@
     - iproute2
     - iproute2-doc
     - resolvconf
-  when: "'network' in hostvars[inventory_hostname]"
+  when: network is defined
 
 - name: Install bridge-utils (if necessary)
   become: True
@@ -23,8 +23,8 @@
     name: bridge-utils
     state: present
   when:
-    - "'network' in hostvars[inventory_hostname]"
-    - "'bridge' in hostvars[inventory_hostname]['network']"
+    - network is defined
+    - network.bridge is defined
 
 - name: Configure loopback interface
   become: True
@@ -34,7 +34,7 @@
     owner: root
     group: root
     mode: 0644
-  when: "'network' in hostvars[inventory_hostname]"
+  when: network is defined
 
 - name: Configure normal interfaces
   become: True
@@ -46,8 +46,8 @@
     mode: 0644
   with_dict: "{{ hostvars[inventory_hostname]['network']['iface'] }}"
   when:
-    - "'network' in hostvars[inventory_hostname]"
-    - "'iface' in hostvars[inventory_hostname]['network']"
+    - network is defined
+    - network.iface is defined
 
 - name: Configure bridge interfaces
   become: True
@@ -59,8 +59,8 @@
     mode: 0644
   with_dict: "{{ hostvars[inventory_hostname]['network']['bridge'] }}"
   when:
-    - "'network' in hostvars[inventory_hostname]"
-    - "'bridge' in hostvars[inventory_hostname]['network']"
+    - network is defined
+    - network.bridge is defined
 
 - name: Overwrite main network config file
   become: True
@@ -72,7 +72,7 @@
     group: root
     mode: 0644
   when:
-    - "'network' in hostvars[inventory_hostname]"
+    - network is defined
     - not network_squash_config
 
 - name: Overwrite main network config file
@@ -85,5 +85,5 @@
     group: root
     mode: 0644
   when:
-    - "'network' in hostvars[inventory_hostname]"
+    - network is defined
     - network_squash_config

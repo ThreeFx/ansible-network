@@ -1,0 +1,21 @@
+# Managed by ansible (role: network), do not edit!
+
+auto {{ item.key }}
+iface {{ item.key }} inet static
+    bridge_ports {{ item.value.parent }}
+{% if 'address' in item.value %}
+    address {{ item.value.ip }}
+{% endif %}
+{% if 'gateway' in item.value %}
+    gateway {{ item.value.gateway }}
+{% endif %}
+{% if 'dns' in item.value %}
+    dns-nameservers {{ item.value.dns | join(' ') }}
+{% endif %}
+    bridge_stp off
+    bridge_fd 0
+
+{% if 'ip6' in item.value %}
+iface {{ item.key }} inet6 static
+    address {{ item.value.ip6 }}
+{% endif %}
