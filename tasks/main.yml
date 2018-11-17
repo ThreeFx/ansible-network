@@ -65,7 +65,7 @@
 - name: Overwrite main network config file
   become: True
   copy:
-    src: interfaces.j2
+    src: interfaces
     dest: /etc/network/interfaces
     backup: yes
     owner: root
