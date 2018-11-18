@@ -3,7 +3,7 @@
 auto {{ item.key }}
 iface {{ item.key }} inet static
     bridge_ports {{ item.value.parent }}
-{% if 'address' in item.value %}
+{% if 'ip' in item.value %}
     address {{ item.value.ip }}
 {% endif %}
 {% if 'gateway' in item.value %}
